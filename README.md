@@ -14,7 +14,7 @@ I focused on a clean UI and mobile usability.
 
 ## Live Demo
 
-👉 https://wanderway-app.web.app/
+👉 https://tawashiy.github.io/wanderway/
 
 ## 🚀 Tech Stack
 
