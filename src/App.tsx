@@ -1,13 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ErrorDialog } from "./components/ErrorDialog";
-import { openGoogleMap } from "./utils/locationUtils";
+import { useGeoWalk } from "./hooks/useGeoWalk";
 
 function App() {
   // State to store the distance value (can be null initially)
   const [distance, setDistance] = useState<number | null>(null);
 
-  // State to control the visibility of an error message/modal
+  // State to control the visibility of an error modal
   const [isErrorOpen, setIsErrorOpen] = useState(false);
+
+  // Initialize geolocation hooks
+  const { getLocation, openGoogleMap } = useGeoWalk(() => setIsErrorOpen(true));
+
+  // Call getLocation once to get the user's current location
+  useEffect(() => {
+    getLocation();
+  }, []);
 
   // Handler function to open Google Maps if distance is valid
   const handleMap = async () => {
@@ -18,7 +26,7 @@ function App() {
     }
 
     // Try to open Google Maps with the distance; if it fails, show error
-    openGoogleMap(distance, () => setIsErrorOpen(true));
+    openGoogleMap(distance);
   };
 
   return (
@@ -30,6 +38,9 @@ function App() {
           </h1>
           <p className="mt-2 text-sm text-[#9d5987]">
             Choose your walking distance.
+          </p>
+          <p className="mt-1 text-xs text-[#9d5987]">
+            A random walking route will be generated for your chosen distance.
           </p>
         </div>
         <div className="space-y-3">
